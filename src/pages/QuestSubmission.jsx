@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../context/DataContext';
-import { useWallet } from '../context/WalletContext';
+import { useCurrentAccount } from '@mysten/dapp-kit';
 import GlassCard from '../components/UI/GlassCard';
 import { ArrowLeft, Link as LinkIcon, Send, Wallet, AlertCircle } from 'lucide-react';
 
@@ -9,7 +9,9 @@ const QuestSubmission = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { bounties, joinBounty } = useData();
-    const { walletAddress, isConnected, connectWallet } = useWallet();
+    const currentAccount = useCurrentAccount();
+    const walletAddress = currentAccount?.address;
+    const isConnected = !!currentAccount;
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionLink, setSubmissionLink] = useState('');
 
@@ -82,14 +84,7 @@ const QuestSubmission = () => {
                             ) : (
                                 <div className="wallet-display disconnected">
                                     <AlertCircle size={18} className="text-error" />
-                                    <span>Wallet not connected</span>
-                                    <button
-                                        type="button"
-                                        className="btn-connect-small"
-                                        onClick={connectWallet}
-                                    >
-                                        Connect Now
-                                    </button>
+                                    <span>Wallet not connected. Please log out and connect your wallet.</span>
                                 </div>
                             )}
                             <p className="helper-text">Rewards will be sent to this address upon approval.</p>
