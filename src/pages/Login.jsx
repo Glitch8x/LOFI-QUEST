@@ -1,38 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import React from 'react';
+import { ConnectButton } from '@mysten/dapp-kit';
+import { Sparkles } from 'lucide-react';
 import GlassCard from '../components/UI/GlassCard';
-import { Mail, Lock, Sparkles, ArrowRight, User } from 'lucide-react';
 
 const Login = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const { login, signup } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    try {
-      if (isSignUp) {
-        await signup(email, password, name);
-      } else {
-        await login(email, password);
-      }
-      navigate('/');
-    } catch (err) {
-      console.error(err);
-      setError(err.message || 'Failed to authenticate.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="login-page">
       <div className="login-container">
@@ -42,76 +13,15 @@ const Login = () => {
             <Sparkles size={32} color="var(--color-primary)" />
           </div>
           <h1>Lofi Quests</h1>
-          <p>Your gateway to micro-impact earning.</p>
+          <p>Connect your Sui wallet to start earning.</p>
         </div>
 
         <GlassCard className="login-card">
-          <h2 className="card-title">{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
+          <h2 className="card-title">Connect Wallet</h2>
+          <p className="card-subtitle">Connect your Sui wallet to access quests and start earning rewards.</p>
 
-          <form onSubmit={handleSubmit}>
-            {isSignUp && (
-              <div className="form-group">
-                <label>Full Name</label>
-                <div className="input-wrapper">
-                  <User size={18} className="input-icon" />
-                  <input
-                    type="text"
-                    placeholder="e.g. Yeti Believer"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="form-group">
-              <label>Email Address</label>
-              <div className="input-wrapper">
-                <Mail size={18} className="input-icon" />
-                <input
-                  type="email"
-                  placeholder="yeti@lofiquests.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label>Password</label>
-              <div className="input-wrapper">
-                <Lock size={18} className="input-icon" />
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            {error && <div className="error-message">{error}</div>}
-
-            <button type="submit" className="btn-login" disabled={isLoading}>
-              {isLoading ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}
-              {!isLoading && <ArrowRight size={18} />}
-            </button>
-          </form>
-
-          <div className="switch-mode">
-            <p>{isSignUp ? 'Already have an account?' : "Don't have an account?"}</p>
-            <button
-              className="btn-text"
-              onClick={() => {
-                setIsSignUp(!isSignUp);
-                setError('');
-              }}
-            >
-              {isSignUp ? 'Sign In' : 'Create one'}
-            </button>
+          <div className="connect-button-wrapper">
+            <ConnectButton />
           </div>
         </GlassCard>
       </div>
@@ -157,6 +67,11 @@ const Login = () => {
           animation: float 3s ease-in-out infinite;
         }
 
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+
         .brand-header h1 {
           font-size: 2rem;
           font-weight: 700;
@@ -172,154 +87,35 @@ const Login = () => {
         }
 
         .login-card {
-          padding: 32px;
+          padding: 40px 32px;
+          text-align: center;
         }
         
         .card-title {
-            font-size: 1.5rem;
-            margin-bottom: 24px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .form-group {
-          margin-bottom: 20px;
-        }
-
-        .form-group label {
-          display: block;
-          margin-bottom: 8px;
-          color: var(--color-text-secondary);
-          font-size: 0.9rem;
-        }
-
-        .input-wrapper {
-          position: relative;
-        }
-
-        .input-icon {
-          position: absolute;
-          left: 12px;
-          top: 50%;
-          transform: translateY(-50%);
-          color: var(--color-text-secondary);
-          pointer-events: none;
-        }
-
-        .input-wrapper input {
-          width: 100%;
-          padding: 12px 12px 12px 40px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid var(--color-glass-border);
-          border-radius: var(--radius-sm);
-          color: var(--color-text);
-          font-size: 1rem;
-          transition: all 0.2s;
-        }
-
-        .input-wrapper input:focus {
-          outline: none;
-          border-color: var(--color-primary);
-          background: rgba(255,255,255,0.08);
-        }
-
-        .btn-login {
-          width: 100%;
-          padding: 14px;
-          background: var(--color-primary);
-          color: white;
-          border: none;
-          border-radius: var(--radius-sm);
+          font-size: 1.5rem;
+          margin-bottom: 12px;
           font-weight: 600;
-          font-size: 1rem;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          transition: background 0.2s;
-          margin-top: 8px;
         }
 
-        .btn-login:hover:not(:disabled) {
-          background: var(--color-primary-hover);
-        }
-        
-        .btn-login:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
-
-        .divider {
-          display: flex;
-          align-items: center;
-          margin: 24px 0;
-          color: var(--color-text-secondary);
-          font-size: 0.85rem;
-        }
-
-        .divider::before, .divider::after {
-          content: '';
-          flex: 1;
-          height: 1px;
-          background: var(--color-glass-border);
-        }
-
-        .divider span {
-          padding: 0 12px;
-        }
-
-        .btn-google {
-          width: 100%;
-          padding: 12px;
-          background: white;
-          color: #1a1a1a;
-          border: none;
-          border-radius: var(--radius-sm);
-          font-weight: 500;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 12px;
-          transition: transform 0.1s;
-        }
-
-        .btn-google:hover:not(:disabled) {
-          background: #f0f0f0;
-        }
-
-        .switch-mode {
-          margin-top: 24px;
-          text-align: center;
-          display: flex;
-          justify-content: center;
-          gap: 8px;
+        .card-subtitle {
           color: var(--color-text-secondary);
           font-size: 0.9rem;
+          margin-bottom: 32px;
+          line-height: 1.5;
         }
 
-        .btn-text {
-            background: none;
-            border: none;
-            color: var(--color-primary);
-            font-weight: 600;
-            cursor: pointer;
-            padding: 0;
-            font-size: inherit;
+        .connect-button-wrapper {
+          display: flex;
+          justify-content: center;
         }
-        .btn-text:hover {
-            text-decoration: underline;
-        }
-        
-        .error-message {
-          color: #ff4d4f;
-          background: rgba(255, 77, 79, 0.1);
-          padding: 10px;
-          border-radius: var(--radius-sm);
-          font-size: 0.9rem;
-          margin-bottom: 20px;
-          text-align: center;
+
+        /* Override Sui ConnectButton styles to match our theme */
+        .connect-button-wrapper button {
+          font-size: 1rem !important;
+          padding: 14px 24px !important;
+          border-radius: var(--radius-sm) !important;
+          font-weight: 600 !important;
+          transition: all 0.2s !important;
         }
       `}</style>
     </div>

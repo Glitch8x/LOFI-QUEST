@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SuiClientProvider, WalletProvider } from '@mysten/dapp-kit';
+import { getFullnodeUrl } from '@mysten/sui/client';
+import '@mysten/dapp-kit/dist/index.css';
+
 import Sidebar from './components/Layout/Sidebar';
 import Home from './pages/Home';
 import Explore from './pages/Explore';
@@ -15,14 +20,23 @@ import Leaderboard from './pages/Leaderboard';
 
 import { DataProvider } from './context/DataContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { WalletProvider } from './context/WalletContext';
+
+// Create a query client for React Query
+const queryClient = new QueryClient();
+
+// Sui network configuration
+const networks = {
+  mainnet: { url: getFullnodeUrl('mainnet') },
+  testnet: { url: getFullnodeUrl('testnet') },
+  devnet: { url: getFullnodeUrl('devnet') },
+};
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-primary)' }}>Loading Quests... (Waiting for Auth)</div>;
+    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-primary)' }}>Loading Quests...</div>;
   }
 
   if (!user) {
@@ -57,118 +71,99 @@ const AppLayout = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <WalletProvider>
-          <DataProvider>
-            <Routes>
-              <Route path="/login" element={<Login />} />
+    <QueryClientProvider client={queryClient}>
+      <SuiClientProvider networks={networks} defaultNetwork="devnet">
+        <WalletProvider autoConnect>
+          <Router>
+            <AuthProvider>
+              <DataProvider>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
 
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Home />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
+                  <Route path="/" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Home />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
 
-              <Route path="/explore" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Explore />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
+                  <Route path="/explore" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Explore />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
 
-              <Route path="/grants" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Grants />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
+                  <Route path="/grants" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Grants />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
 
-              <Route path="/leaderboard" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Leaderboard />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
+                  <Route path="/leaderboard" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Leaderboard />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
 
-              <Route path="/grants/apply/:id" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <GrantApplication />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
+                  <Route path="/grants/apply/:id" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <GrantApplication />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
 
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <Profile />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
+                  <Route path="/profile" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Profile />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
 
-              <Route path="/quest/submit/:id" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <QuestSubmission />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
+                  <Route path="/quest/submit/:id" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <QuestSubmission />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
 
+                  <Route path="/admin" element={
+                    <AppLayout>
+                      <AdminLogin />
+                    </AppLayout>
+                  } />
 
+                  <Route path="/admin/dashboard" element={
+                    <ProtectedAdminRoute>
+                      <AppLayout>
+                        <AdminDashboard />
+                      </AppLayout>
+                    </ProtectedAdminRoute>
+                  } />
 
-              <Route path="/admin" element={
-                <AppLayout>
-                  <AdminLogin />
-                </AppLayout>
-              } />
-
-              <Route path="/admin/dashboard" element={
-                <ProtectedAdminRoute>
-                  <AppLayout>
-                    <AdminDashboard />
-                  </AppLayout>
-                </ProtectedAdminRoute>
-              } />
-
-              <Route path="/quest/:id" element={
-                <ProtectedRoute>
-                  <AppLayout>
-                    <QuestDetail />
-                  </AppLayout>
-                </ProtectedRoute>
-              } />
-            </Routes>
-          </DataProvider>
+                  <Route path="/quest/:id" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <QuestDetail />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                </Routes>
+              </DataProvider>
+            </AuthProvider>
+          </Router>
         </WalletProvider>
-      </AuthProvider>
-
-      <style>{`
-        .app-container {
-          display: flex;
-          min-height: 100vh;
-        }
-
-        .main-content {
-          flex: 1;
-          margin-left: 280px; /* Sidebar width + gap */
-          padding: 16px;
-        }
-
-        @media (max-width: 768px) {
-          .main-content {
-            margin-left: 0;
-            padding: 16px;
-            padding-top: 64px; /* Space for fixed toggle button */
-          }
-        }
-      `}</style>
-    </Router>
+      </SuiClientProvider>
+    </QueryClientProvider>
   );
 }
 
