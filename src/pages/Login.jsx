@@ -44,34 +44,28 @@ const Login = () => {
             <ConnectButton />
           </div>
 
-          <div className="slush-wallet-link">
-            <p>Using Slush Wallet?</p>
-            <a href="https://my.slush.app" target="_blank" rel="noopener noreferrer" className="btn-slush">
-              Open Web Wallet <span className="external-icon">↗</span>
-            </a>
+          <div className="wallet-instructions">
+            <p className="instruction-title">Don't see your wallet?</p>
+            <ol className="instruction-list">
+              <li>Make sure <a href="https://slush.app" target="_blank" rel="noopener noreferrer">Slush Wallet</a> browser extension is installed</li>
+              <li>Reload this page after installing</li>
+              <li>Click "Connect Wallet" above and select Slush</li>
+            </ol>
           </div>
 
           <div className="manual-connect-section">
-            <button
-              className="btn-text-small"
-              onClick={() => setShowManual(!showManual)}
-            >
-              Trouble connecting? Enter address manually
-            </button>
-
-            {showManual && (
-              <form onSubmit={handleManualSubmit} className="manual-form animate-fade-in">
-                <input
-                  type="text"
-                  placeholder="0x..."
-                  className="manual-input"
-                  value={manualAddress}
-                  onChange={(e) => setManualAddress(e.target.value)}
-                  required
-                />
-                <button type="submit" className="btn-manual-submit">Connect</button>
-              </form>
-            )}
+            <p className="divider-text">Or enter wallet address manually</p>
+            <form onSubmit={handleManualSubmit} className="manual-form">
+              <input
+                type="text"
+                placeholder="0x..."
+                className="manual-input"
+                value={manualAddress}
+                onChange={(e) => setManualAddress(e.target.value)}
+                required
+              />
+              <button type="submit" className="btn-manual-submit">Connect</button>
+            </form>
           </div>
         </GlassCard>
       </div>
@@ -250,6 +244,45 @@ const Login = () => {
             font-weight: 600;
             cursor: pointer;
             font-size: 0.9rem;
+        }
+
+        .wallet-instructions {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-glass-border);
+            text-align: left;
+        }
+
+        .instruction-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--color-text);
+        }
+
+        .instruction-list {
+            padding-left: 20px;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .instruction-list a {
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+
+        .divider-text {
+            color: var(--color-text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        .manual-connect-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-glass-border);
         }
       `}</style>
     </div>
