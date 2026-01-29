@@ -7,8 +7,12 @@ import PostBountyModal from '../Modals/PostBountyModal';
 
 const Sidebar = () => {
   const { postBounty, notifications } = useData();
-  const { user } = useAuth();
+  const auth = useAuth();
+  const user = auth?.user;
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Debug log
+  if (!auth) console.error("Sidebar: AuthContext is missing!");
 
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
