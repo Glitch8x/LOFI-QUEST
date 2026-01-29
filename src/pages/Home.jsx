@@ -10,7 +10,8 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [activeFilter, setActiveFilter] = useState('All');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { bounties, stats } = useData();
+  const dataContext = useData();
+  const { bounties, stats } = dataContext || { bounties: [], stats: { totalValueEarned: 0, opportunitiesListed: 0 } };
   const auth = useAuth();
   const user = auth?.user;
 

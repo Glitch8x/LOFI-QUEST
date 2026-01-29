@@ -6,7 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 import PostBountyModal from '../Modals/PostBountyModal';
 
 const Sidebar = () => {
-  const { postBounty, notifications } = useData();
+  const dataContext = useData();
+  const { postBounty, notifications } = dataContext || { postBounty: () => { }, notifications: [] };
   const auth = useAuth();
   const user = auth?.user;
   const [isModalOpen, setIsModalOpen] = useState(false);
