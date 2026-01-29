@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Home, Compass, Banknote, PlusCircle, Settings, LogOut, User, Trophy } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useData } from '../../context/DataContext';
+import { useAuth } from '../../context/AuthContext';
 import PostBountyModal from '../Modals/PostBountyModal';
 
 const Sidebar = () => {
-  const { postBounty, user, notifications } = useData();
+  const { postBounty, notifications } = useData();
+  const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navItems = [
@@ -96,7 +98,7 @@ const Sidebar = () => {
           <div className="user-section">
             <div className="user-avatar" />
             <div className="user-info">
-              <p className="username">{user?.name || 'Yeti Believer'}</p>
+              <p className="username">{user?.name || user?.walletAddress || 'Yeti Believer'}</p>
               <p className="user-level">Lvl {user?.level || 1}</p>
             </div>
             <NavLink to="/admin" className="user-action" title="Admin Access">

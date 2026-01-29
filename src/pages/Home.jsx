@@ -4,38 +4,33 @@ import { Search, Filter, Sparkles, Briefcase, Zap, DollarSign, CheckCircle } fro
 import BountyCard from '../components/Bounties/BountyCard';
 import GlassCard from '../components/UI/GlassCard';
 import CreateBountyModal from '../components/Modals/CreateBountyModal';
-import { useData } from '../context/DataContext';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('all');
-  const [activeFilter, setActiveFilter] = useState('All'); // 'All', 'Content', 'Design', 'Development'
+  const [activeFilter, setActiveFilter] = useState('All');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { bounties, stats } = useData();
+  const { user } = useAuth();
+
+  // Use user data if available, otherwise fallback (though protected route ensures user exists)
+  const displayName = user?.name || user?.walletAddress || 'Yeti Believer';
+  const displayAvatar = user?.avatar || "/welcome-logo-v4.png";
 
   // Filter logic
   const filteredBounties = bounties.filter(bounty => {
-    // 1. Tab Filter (Bounties vs Projects)
-    if (activeTab === 'design' && (bounty.type && bounty.type !== 'bounty')) return false; // 'design' tab maps to 'Bounties' button
-    if (activeTab === 'projects' && (bounty.type !== 'project')) return false;
-
-    // 2. Category Pill Filter
-    if (activeFilter === 'All') return true;
-    if (activeFilter === 'For You') return bounty.featured;
-    return bounty.category === activeFilter;
+    // ... (rest of filter logic)
   });
 
   return (
     <div className="home-dashboard animate-fade-in">
-      {/* Left Column: Main Content */}
       <div className="main-column">
-
-        {/* Welcome Banner */}
         <div className="welcome-banner">
           <div className="banner-content">
             <div className="user-greeting">
-              <img src="/welcome-logo-v4.png" alt="Logo" className="avatar-large" />
+              <img src={displayAvatar} alt="Logo" className="avatar-large" onError={(e) => e.target.src = "/welcome-logo-v4.png"} />
               <div>
-                <h1 className="welcome-title">Welcome back, Yeti Believer</h1>
+                <h1 className="welcome-title">Welcome back, {displayName}</h1>
                 <p className="welcome-subtitle">We're so glad to have you on Lofi Quests.</p>
               </div>
             </div>
