@@ -25,7 +25,13 @@ const Home = () => {
 
   // Filter logic
   const filteredBounties = bounties.filter(bounty => {
-    // ... (rest of filter logic)
+    // Tab filter (all, design/bounties, projects)
+    if (activeTab === 'design' && bounty.type !== 'bounty') return false;
+    if (activeTab === 'projects' && bounty.type !== 'project') return false;
+
+    // Category filter
+    if (activeFilter === 'All' || activeFilter === 'For You') return true;
+    return bounty.category === activeFilter;
   });
 
   return (
