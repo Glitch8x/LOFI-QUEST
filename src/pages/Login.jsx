@@ -23,6 +23,13 @@ const Login = () => {
           <div className="connect-button-wrapper">
             <ConnectButton />
           </div>
+
+          <div className="slush-wallet-link">
+            <p>Using Slush Wallet?</p>
+            <a href="https://my.slush.app" target="_blank" rel="noopener noreferrer" className="btn-slush">
+              Open Web Wallet <span className="external-icon">↗</span>
+            </a>
+          </div>
         </GlassCard>
       </div>
 
@@ -116,6 +123,38 @@ const Login = () => {
           border-radius: var(--radius-sm) !important;
           font-weight: 600 !important;
           transition: all 0.2s !important;
+        }
+
+        .slush-wallet-link {
+          margin-top: 24px;
+          padding-top: 20px;
+          border-top: 1px solid var(--color-glass-border);
+        }
+
+        .slush-wallet-link p {
+          font-size: 0.9rem;
+          color: var(--color-text-secondary);
+          margin-bottom: 8px;
+        }
+
+        .btn-slush {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          color: var(--color-primary);
+          font-weight: 600;
+          text-decoration: none;
+          font-size: 0.95rem;
+          transition: opacity 0.2s;
+        }
+        
+        .btn-slush:hover {
+          opacity: 0.8;
+          text-decoration: underline;
+        }
+
+        .external-icon {
+          font-size: 0.8em;
         }
       `}</style>
     </div>
