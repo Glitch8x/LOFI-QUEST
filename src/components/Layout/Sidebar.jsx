@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Home, Compass, Banknote, PlusCircle, Settings, LogOut, User, Wallet, Trophy } from 'lucide-react';
+import { Home, Compass, Banknote, PlusCircle, Settings, LogOut, User, Trophy } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useData } from '../../context/DataContext';
-import { useWallet } from '../../context/WalletContext';
 import PostBountyModal from '../Modals/PostBountyModal';
 
 const Sidebar = () => {
-  const { connectWallet, disconnectWallet, walletAddress, isConnecting, isConnected } = useWallet();
   const { postBounty, user, notifications } = useData();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -20,12 +18,6 @@ const Sidebar = () => {
 
   const handlePostBounty = (newBounty) => {
     postBounty(newBounty);
-  };
-
-  // Helper to shorten address
-  const shortenAddress = (addr) => {
-    if (!addr) return '';
-    return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
   };
 
   // Mobile Toggle state
@@ -99,21 +91,6 @@ const Sidebar = () => {
               <PlusCircle size={18} style={{ marginRight: '8px' }} />
               Post Bounty
             </button>
-          </div>
-
-          {/* Wallet Connection */}
-          <div className="wallet-section">
-            {isConnected ? (
-              <button className="btn-wallet connected" onClick={disconnectWallet}>
-                <div className="wallet-indicator"></div>
-                {shortenAddress(walletAddress)}
-              </button>
-            ) : (
-              <button className="btn-wallet" onClick={connectWallet} disabled={isConnecting}>
-                <Wallet size={18} />
-                {isConnecting ? 'Connecting...' : 'Connect Wallet'}
-              </button>
-            )}
           </div>
 
           <div className="user-section">
