@@ -12,10 +12,10 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dataContext = useData();
   const { bounties, stats } = dataContext || { bounties: [], stats: { totalValueEarned: 0, opportunitiesListed: 0 } };
-  const auth = useAuth();
-  const user = auth?.user;
+  // const auth = useAuth();
+  const user = { name: 'Yeti Believer' };
 
-  if (!auth) console.error("Home: AuthContext is missing!");
+  // if (!auth) console.error("Home: AuthContext is missing!");
 
   // Use user data if available, otherwise fallback (though protected route ensures user exists)
   const displayName = user?.name || user?.walletAddress || 'Yeti Believer';

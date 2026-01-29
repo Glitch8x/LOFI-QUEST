@@ -8,12 +8,12 @@ import PostBountyModal from '../Modals/PostBountyModal';
 const Sidebar = () => {
   const dataContext = useData();
   const { postBounty, notifications } = dataContext || { postBounty: () => { }, notifications: [] };
-  const auth = useAuth();
-  const user = auth?.user;
+  // const auth = useAuth();
+  const user = { name: 'Yeti Believer', level: 1 };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Debug log
-  if (!auth) console.error("Sidebar: AuthContext is missing!");
+  // if (!auth) console.error("Sidebar: AuthContext is missing!");
 
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
