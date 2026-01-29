@@ -80,7 +80,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SuiClientProvider networks={networks} defaultNetwork="devnet">
-        <WalletProvider autoConnect>
+        <WalletProvider autoConnect={false}>
           <Router>
             <AuthProvider>
               <DataProvider>
