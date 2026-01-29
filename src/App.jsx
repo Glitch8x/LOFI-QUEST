@@ -33,10 +33,17 @@ const networks = {
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const auth = useAuth();
+  const user = auth?.user;
+  const loading = auth?.loading;
 
   if (loading) {
     return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-primary)' }}>Loading Quests...</div>;
+  }
+
+  if (!auth) {
+    console.error("ProtectedRoute: AuthContext is missing!");
+    return <Navigate to="/login" replace />;
   }
 
   if (!user) {

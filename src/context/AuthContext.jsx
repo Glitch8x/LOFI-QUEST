@@ -8,8 +8,14 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const currentAccount = useCurrentAccount();
     const [manualAccount, setManualAccount] = useState(() => {
-        const stored = localStorage.getItem('lofi_manual_wallet');
-        return stored ? JSON.parse(stored) : null;
+        try {
+            const stored = localStorage.getItem('lofi_manual_wallet');
+            return stored ? JSON.parse(stored) : null;
+        } catch (error) {
+            console.error("Failed to parse manual wallet:", error);
+            localStorage.removeItem('lofi_manual_wallet');
+            return null;
+        }
     });
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
