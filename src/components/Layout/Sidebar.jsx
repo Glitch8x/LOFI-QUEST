@@ -8,8 +8,9 @@ import PostBountyModal from '../Modals/PostBountyModal';
 const Sidebar = () => {
   const dataContext = useData();
   const { postBounty, notifications } = dataContext || { postBounty: () => { }, notifications: [] };
-  // const auth = useAuth();
-  const user = { name: 'Yeti Believer', level: 1 };
+  const auth = useAuth();
+  const user = auth?.user;
+  // const user = { name: 'Yeti Believer', level: 1 };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Debug log

@@ -13,8 +13,9 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dataContext = useData();
   const { bounties, stats } = dataContext || { bounties: [], stats: { totalValueEarned: 0, opportunitiesListed: 0 } };
-  // const auth = useAuth();
-  const user = { name: 'Yeti Believer' };
+  const auth = useAuth();
+  const user = auth?.user;
+  // const user = { name: 'Yeti Believer' };
 
   // if (!auth) console.error("Home: AuthContext is missing!");
 
