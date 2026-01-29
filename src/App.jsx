@@ -80,7 +80,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SuiClientProvider networks={networks} defaultNetwork="devnet">
-        <WalletProvider autoConnect={false}>
+        <WalletProvider
+          autoConnect={false}
+          preferredWallets={['Slush', 'Sui Wallet']}
+        >
           <Router>
             <AuthProvider>
               <DataProvider>
