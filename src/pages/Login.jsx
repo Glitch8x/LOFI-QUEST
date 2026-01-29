@@ -8,14 +8,20 @@ import GlassCard from '../components/UI/GlassCard';
 const Login = () => {
   const [showManual, setShowManual] = useState(false);
   const [manualAddress, setManualAddress] = useState('');
-  const { manualLogin } = useAuth();
+  const { manualLogin, user } = useAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleManualSubmit = (e) => {
     e.preventDefault();
     if (manualAddress.trim()) {
       manualLogin(manualAddress.trim());
-      navigate('/');
+      // Navigation will happen via the useEffect above
     }
   };
   return (
