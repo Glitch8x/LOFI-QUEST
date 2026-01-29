@@ -175,24 +175,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="widget">
-          <div className="widget-header">
-            <h3 className="widget-title">RECENT EARNERS</h3>
-            <a href="#" className="link-small">Leaderboard →</a>
-          </div>
-          {/* Recent Earners */}
-          {useData().recentEarners && useData().recentEarners.map(earner => (
-            <div key={earner.id} className="earner-item animate-fade-in">
-              <img src={earner.avatar} alt={earner.name} className="earner-avatar" />
-              <div className="earner-info">
-                <p className="earner-name">{earner.name}</p>
-                <p className="earner-task">{earner.task}</p>
-                <span className="earner-category">{earner.category}</span>
-              </div>
-              <span className="earner-amount">{earner.amount} SUI</span>
-            </div>
-          ))}
-        </div>
+
       </div>
 
       <style>{`
@@ -435,78 +418,6 @@ const Home = () => {
           color: var(--color-text-secondary);
         }
 
-        /* Recent Earners */
-        .widget-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-          margin-bottom: 16px;
-        }
-
-        .link-small {
-          font-size: 0.8rem;
-          color: var(--color-primary);
-        }
-
-        .earner-item {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 16px;
-          padding: 8px;
-          border-radius: var(--radius-sm);
-          transition: background 0.2s;
-        }
-
-        .earner-item:hover {
-          background: rgba(255,255,255,0.03);
-        }
-
-        .earner-avatar {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-        }
-        
-        .bg-1 { background: #E53170; }
-        .bg-2 { background: #FF8906; }
-
-        .earner-info {
-          flex: 1;
-          overflow: hidden;
-        }
-
-        .earner-name {
-          font-size: 0.9rem;
-          font-weight: 600;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .earner-task {
-          font-size: 0.75rem;
-          color: var(--color-text-secondary);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          margin-bottom: 2px;
-        }
-
-        .earner-category {
-          display: inline-block;
-          font-size: 0.65rem;
-          background: rgba(255,255,255,0.08);
-          padding: 1px 6px;
-          border-radius: 4px;
-          color: var(--color-text-secondary);
-        }
-
-        .earner-amount {
-          font-weight: 600;
-          color: var(--color-secondary);
-          font-size: 0.9rem;
-        }
 
         @media (max-width: 1024px) {
           .home-dashboard {
