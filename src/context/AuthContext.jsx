@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useCurrentAccount } from '@mysten/dapp-kit';
+import { useCurrentAccount, useDisconnectWallet } from '@mysten/dapp-kit';
 
 const AuthContext = createContext();
 
@@ -7,6 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const currentAccount = useCurrentAccount();
+    const { mutate: disconnect } = useDisconnectWallet();
     const [manualAccount, setManualAccount] = useState(() => {
         try {
             const stored = localStorage.getItem('lofi_manual_wallet');
@@ -29,6 +30,11 @@ export const AuthProvider = ({ children }) => {
     const manualLogout = () => {
         setManualAccount(null);
         localStorage.removeItem('lofi_manual_wallet');
+    };
+
+    const logout = () => {
+        disconnect();
+        manualLogout();
     };
 
     useEffect(() => {
@@ -58,7 +64,8 @@ export const AuthProvider = ({ children }) => {
         user,
         loading,
         manualLogin,
-        manualLogout
+        manualLogout,
+        logout
     };
 
     return (

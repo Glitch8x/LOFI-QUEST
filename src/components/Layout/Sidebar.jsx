@@ -110,6 +110,9 @@ const Sidebar = () => {
             <NavLink to="/admin" className="user-action" title="Admin Access">
               <Settings size={18} />
             </NavLink>
+            <button className="user-action" onClick={auth.logout} title="Logout" style={{ background: 'none', border: 'none', padding: 4 }}>
+              <LogOut size={18} />
+            </button>
           </div>
         </div>
 
