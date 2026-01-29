@@ -199,18 +199,23 @@ const Login = () => {
             text-align: center;
         }
 
-        .btn-text-small {
-            background: none;
-            border: none;
-            color: var(--color-text-secondary);
-            font-size: 0.8rem;
+        .btn-secondary-outline {
+            background: transparent;
+            border: 1px solid var(--color-text-secondary);
+            color: var(--color-text);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
             cursor: pointer;
-            text-decoration: underline;
-            padding: 8px;
+            width: 100%;
+            margin-top: 8px;
+            transition: all 0.2s;
         }
         
-        .btn-text-small:hover {
-            color: var(--color-text);
+        .btn-secondary-outline:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .manual-form {
