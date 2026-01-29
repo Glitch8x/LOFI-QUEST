@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ConnectButton } from '@mysten/dapp-kit';
 import { Sparkles } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import GlassCard from '../components/UI/GlassCard';
 
 const Login = () => {
+  const [showManual, setShowManual] = useState(false);
+  const [manualAddress, setManualAddress] = useState('');
+  const { manualLogin } = useAuth();
+  const navigate = useNavigate();
+
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    if (manualAddress.trim()) {
+      manualLogin(manualAddress.trim());
+      navigate('/');
+    }
+  };
   return (
     <div className="login-page">
       <div className="login-container">
@@ -29,6 +43,29 @@ const Login = () => {
             <a href="https://my.slush.app" target="_blank" rel="noopener noreferrer" className="btn-slush">
               Open Web Wallet <span className="external-icon">↗</span>
             </a>
+          </div>
+
+          <div className="manual-connect-section">
+            <button
+              className="btn-text-small"
+              onClick={() => setShowManual(!showManual)}
+            >
+              Trouble connecting? Enter address manually
+            </button>
+
+            {showManual && (
+              <form onSubmit={handleManualSubmit} className="manual-form animate-fade-in">
+                <input
+                  type="text"
+                  placeholder="0x..."
+                  className="manual-input"
+                  value={manualAddress}
+                  onChange={(e) => setManualAddress(e.target.value)}
+                  required
+                />
+                <button type="submit" className="btn-manual-submit">Connect</button>
+              </form>
+            )}
           </div>
         </GlassCard>
       </div>
@@ -155,6 +192,53 @@ const Login = () => {
 
         .external-icon {
           font-size: 0.8em;
+        }
+
+        .manual-connect-section {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .btn-text-small {
+            background: none;
+            border: none;
+            color: var(--color-text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 8px;
+        }
+        
+        .btn-text-small:hover {
+            color: var(--color-text);
+        }
+
+        .manual-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .manual-input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--color-glass-border);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-size: 0.9rem;
+        }
+
+        .btn-manual-submit {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
         }
       `}</style>
     </div>

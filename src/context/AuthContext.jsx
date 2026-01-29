@@ -7,13 +7,30 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const currentAccount = useCurrentAccount();
+    const [manualAccount, setManualAccount] = useState(() => {
+        const stored = localStorage.getItem('lofi_manual_wallet');
+        return stored ? JSON.parse(stored) : null;
+    });
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    const manualLogin = (address) => {
+        const acc = { address };
+        setManualAccount(acc);
+        localStorage.setItem('lofi_manual_wallet', JSON.stringify(acc));
+    };
+
+    const manualLogout = () => {
+        setManualAccount(null);
+        localStorage.removeItem('lofi_manual_wallet');
+    };
+
     useEffect(() => {
-        if (currentAccount) {
-            // User is connected with wallet
-            const walletAddress = currentAccount.address;
+        const account = currentAccount || manualAccount;
+
+        if (account) {
+            // User is connected with wallet (either dApp kit or manual)
+            const walletAddress = account.address;
             const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
 
             setUser({
@@ -29,11 +46,13 @@ export const AuthProvider = ({ children }) => {
             // No wallet connected
             setUser(null);
         }
-    }, [currentAccount]);
+    }, [currentAccount, manualAccount]);
 
     const value = {
         user,
-        loading
+        loading,
+        manualLogin,
+        manualLogout
     };
 
     return (
