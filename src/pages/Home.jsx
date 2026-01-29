@@ -5,6 +5,7 @@ import BountyCard from '../components/Bounties/BountyCard';
 import GlassCard from '../components/UI/GlassCard';
 import CreateBountyModal from '../components/Modals/CreateBountyModal';
 import { useAuth } from '../context/AuthContext';
+import { useData } from '../context/DataContext';
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('all');
